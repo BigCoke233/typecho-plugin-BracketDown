@@ -149,10 +149,10 @@ class BracketDown_Plugin implements Typecho_Plugin_Interface
     static public function parseDetails($text) 
     {
         $text = preg_replace(
-			'/\[details sum="(.*?)"(.*?)\](.*?)\[\/details\]/s',
-			'<details class="bracketdown"${2}><summary>${1}</summary><div class="bracketdown-details-content">${3}</div></details>',
+			'/\[details sum="(.*?)"\](.*?)\[\/details\]/s',
+			'<details class="bracketdown"><summary>${1}</summary><div class="bracketdown-details-content">${2}</div></details>',
 		$text);
-        $text = preg_replace('/\[details(.*?)\](.*?)\[summary\](.*?)\[\/summary\](.*?)\[\/details\]/s','<details class="bracketdown"${1}><summary>${3}</summary><div class="bracketdown-details-content">${4}</div></details>',$text);
+        $text = preg_replace('/\[details\](.*?)\[summary\](.*?)\[\/summary\](.*?)\[\/details\]/s','<details class="bracketdown"><summary>${2}</summary><div class="bracketdown-details-content">${3}</div></details>',$text);
         return $text;
     }
 	
@@ -162,8 +162,8 @@ class BracketDown_Plugin implements Typecho_Plugin_Interface
     static public function parseBlock($text) 
     {
         $text = preg_replace(
-			'/\[block(.*?)\](.*?)\[\/block\]/s',
-			'<div class="bracketdown-block"${1}>${2}</div>',
+			'/\[block\](.*?)\[\/block\]/s',
+			'<div class="bracketdown-block">${1}</div>',
 		$text);
         return $text;
     }
@@ -194,17 +194,17 @@ class BracketDown_Plugin implements Typecho_Plugin_Interface
     static public function parseGrid($text)
     {
 		$text = preg_replace(
-			'/\[row(.*?)\](.*?)\[\/row\]/s',
-			'<div class="row"${1}>${2}</div>'
+			'/\[row\](.*?)\[\/row\]/s',
+			'<div class="row">${1}</div>'
 		,$text);
 		$text = preg_replace(
-			'/\[col grid=\"(.*?)\"(.*?)\](.*?)\[\/col\]/s',
-			'<div class="col-${1}"${2}>${3}</div>'
+			'/\[col grid=\"(.*?)\"\](.*?)\[\/col\]/s',
+			'<div class="col-${1}">${2}</div>'
 		,$text);
 		//quick method
 		$text = preg_replace(
-			'/\[(.*?)half(.*?)\](.*?)\[\/half\]/s',
-			'<div class="col-${1}6"${2}>${3}</div>'
+			'/\[(.*?)half\](.*?)\[\/half\]/s',
+			'<div class="col-${1}6">${2}</div>'
 		,$text);
 		
 		return $text;
