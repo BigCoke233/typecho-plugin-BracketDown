@@ -1,0 +1,38 @@
+@charset 'utf-8';
+
+kbd {
+    background-color: #fafbfc;
+    border-radius: 3px;
+    color: #444d56;
+    display: inline-block;
+    font: .9em SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace;
+    line-height: 10px;
+    padding: 3px 5px;
+    vertical-align: middle;
+    border: 1px solid #c6cbd1;
+    border-bottom-color: #959da5;
+    box-shadow: inset 0 -1px 0 #959da5;
+    vertical-align: middle;
+}
+
+details.bracketdown summary {
+    cursor: pointer;
+    outline: none;
+    font-size: 1em;
+    padding: .2em 0;
+	font-weight: bold
+}
+details.bracketdown .bracketdown-details-content {
+	margin-left: .95em
+}
+
+.bracketdown-block {
+	border: 1px solid #ddd;
+	border-radius: 2px;
+	padding: .8em;
+	background-color: rgba(0,0,0,.02)
+}
+
+.bracketdown-underline {
+	text-decoration: underline
+}
