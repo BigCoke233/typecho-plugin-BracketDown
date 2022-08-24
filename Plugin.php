@@ -61,14 +61,6 @@ class BracketDown_Plugin implements Typecho_Plugin_Interface
 		<strong>但通常情况下，你只需要将该设置保持默认。</strong>'));
         $form->addInput($ifDefaultStyle);
 		
-		$ifGrid = new Typecho_Widget_Helper_Form_Element_Select('ifGrid', array(
-			'0' => '是',
-			'1' => '否'
-		), "0", _t('是否引入 grid.css'), _t('通常情况下，引入 grid.css 才会使插件的网格语法生效，也就是 <code>[row]</code> 和 <code>[col]</code>。
-		插件引入的是 bootstrap 的 bootstrap-grid.css，如果你使用的主题也引入了这个 css，或者说与这个 css 使用相同的类名并定义了相似的样式，就可以不额外引入 grid.css。
-		如果你不理解，<strong>在没有问题出现的情况下，请保持该设置项默认开启。</strong>'));
-        $form->addInput($ifGrid);
-		
 		$ifPolyfillDetails = new Typecho_Widget_Helper_Form_Element_Select('ifPolyfillDetails', array(
 			'0' => '是',
 			'1' => '否'
@@ -88,10 +80,6 @@ class BracketDown_Plugin implements Typecho_Plugin_Interface
 		//引入默认样式
 		if(Typecho_Widget::widget('Widget_Options')->plugin('BracketDown')->ifDefaultStyle=='0') {
 			echo "<link rel=\"stylesheet\" href=\"{$dir}/default.css\">\n";
-		}
-		//引入网格样式
-		if(Typecho_Widget::widget('Widget_Options')->plugin('BracketDown')->ifGrid=='0') {
-			echo "<link rel=\"stylesheet\" href=\"{$dir}/bootstrap-grid.css\">\n";
 		}
     }
 	
@@ -117,7 +105,7 @@ class BracketDown_Plugin implements Typecho_Plugin_Interface
     {
         $text = empty($last) ? $data : $last;
         if ($widget instanceof Widget_Archive) {
-			$text = BracketDown_Plugin::parseUnderline(BracketDown_Plugin::parseGrid(BracketDown_Plugin::parseTextColor(BracketDown_Plugin::parseBlock(BracketDown_Plugin::parseDetails(BracketDown_Plugin::parseKbd(BracketDown_Plugin::parseRuby($text)))))));
+			$text = BracketDown_Plugin::parseUnderline(BracketDown_Plugin::parseTextColor(BracketDown_Plugin::parseBlock(BracketDown_Plugin::parseDetails(BracketDown_Plugin::parseKbd(BracketDown_Plugin::parseRuby($text))))));
         }
         return $text;
     }
@@ -185,28 +173,6 @@ class BracketDown_Plugin implements Typecho_Plugin_Interface
 			'/\%\{(.*?)\|(.*?)\}/s',
 			'<span style="background:${2}">${1}</span>'
 		,$text);
-		return $text;
-	}
-	
-	/**
-	 *  解析网格
-	 */
-    static public function parseGrid($text)
-    {
-		$text = preg_replace(
-			'/\[row\](.*?)\[\/row\]/s',
-			'<div class="row">${1}</div>'
-		,$text);
-		$text = preg_replace(
-			'/\[col grid=\"(.*?)\"\](.*?)\[\/col\]/s',
-			'<div class="col-${1}">${2}</div>'
-		,$text);
-		//quick method
-		$text = preg_replace(
-			'/\[(.*?)half\](.*?)\[\/half\]/s',
-			'<div class="col-${1}6">${2}</div>'
-		,$text);
-		
 		return $text;
 	}
 	
