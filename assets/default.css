@@ -36,3 +36,8 @@ details.bracketdown .bracketdown-details-content {
 .bracketdown-underline {
 	text-decoration: underline
 }
+
+[id|=ghcard-lepture] {
+    display: block;
+    margin: 1em auto;
+}
