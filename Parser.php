@@ -85,6 +85,41 @@ Class BracketDown_Parser {
 	}
 
     /**
+     * 解析站内文章卡片
+     * credit youranreus/G
+     * edited
+     */
+    static public function postCard($text)
+    {
+        if (preg_match_all("/\[art\](.*?)\[\/art\]/s", $text, $matches)){
+
+            $i = 0;
+            foreach($matches[1] as $id) {
+
+                $db = Typecho_Db::get();
+                $result = $db->fetchAll($db->select()->from('table.contents')
+                    ->where('status = ?', 'publish')
+                    ->where('type = ?', 'post')
+                    ->where('cid = ?', $id)
+                );
+
+                $text = str_replace(
+                    $matches[0][$i],
+                    '<div class="bracketdown-post"><h4>'.$result[0]['title'].'</h4><p>'.$result[0]['permalink'].'</p></div>'
+                ,$text);
+
+                $i++;
+
+            }
+
+            return $text;
+        }else{
+            return $text;
+        }
+
+    }
+
+    /**
      * 解析文章内直接写入的链接
      * 将其变为更容易阅读的形式
      * 
@@ -93,19 +128,29 @@ Class BracketDown_Parser {
      * Credit https://github.com/ShangJixin/Typecho-Plugin-superLink/blob/main/JixinParser.php
      */
     static public function linkToContent($text) {
-        //若文章中有直接写入的链接
-        if(preg_match_all('/<a(.*?)href="(.*?)"(.*?)>(.*?)<\/a>/is',$text,$matches)){
-            foreach ($matches[0] as $child){
-                $strip_child = strip_tags($child);
-                $text = BracketDown_Parser::github(
-                            BracketDown_Parser::bilibili(
+        if(Typecho_Widget::widget('Widget_Options')->plugin('BracketDown')->ifParseLink=='0') {
+            //若文章中有直接写入的链接
+            if(preg_match_all('/<a(.*?)href="(.*?)"(.*?)>(.*?)<\/a>/is',$text,$matches)){
+
+                $i=0;
+                foreach ($matches[0] as $child){
+                    if ($matches[2][$i] != $matches[4][$i]){
+                        $i+=1;
+                        continue;
+                    }
+
+                    $strip_child = strip_tags($child);
+                    $text = BracketDown_Parser::bilibili(
+                            BracketDown_Parser::github(
                                 $text, 
                                 preg_quote($child,'/'),
                                 $strip_child
                             ), 
                             preg_quote($child,'/'),
                             $strip_child
-                        );
+                    );
+                    $i+=1;
+                }
             }
         }
 

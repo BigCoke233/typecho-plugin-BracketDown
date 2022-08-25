@@ -119,8 +119,9 @@ class BracketDown_Plugin implements Typecho_Plugin_Interface
 					BracketDown_Parser::block(
 					BracketDown_Parser::details(
 					BracketDown_Parser::kbd(
-					BracketDown_Parser::ruby($text
-				)))))));
+					BracketDown_Parser::ruby(
+					BracketDown_Parser::postCard($text
+				))))))));
         }
         return $text;
     }

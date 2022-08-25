@@ -84,6 +84,7 @@ details.bracketdown .bracketdown-details-content {
     display: inline-block;
     border: none;
     color: #000;
+    margin-left: 1em
 }
 
 [data-github] .github-card-footer {
@@ -115,4 +116,11 @@ iframe.bilibili-video-player {
     iframe.bilibili-video-player {
         height: 360px
     }
+}
+
+.bracketdown-postcard {
+    display: block;
+    margin: 1em 0;
+    padding: 1em;
+    border: 1px solid #ccc
 }
