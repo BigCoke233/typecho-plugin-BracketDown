@@ -118,9 +118,55 @@ iframe.bilibili-video-player {
     }
 }
 
-.bracketdown-postcard {
+.bracketdown-post {
     display: block;
-    margin: 1em 0;
-    padding: 1em;
-    border: 1px solid #ccc
+    margin: 1em auto;
+    padding: .5em 1.5em;
+    border: 1px solid #ccc;
+    max-width: 75%;
+    width: fit-content;
+}
+
+.bracketdown-post-title {
+    margin: .5em 0;
+    font-size: 1.2em;
+}
+
+.bracketdown-post-title a {
+    color: #222;
+    border: none;
+    text-decoration: none
+}
+
+.bracketdown-post-excerpt {
+    color: #666;
+    font-size: .9em
+}
+
+.bracketdown-post-meta {
+    display: flex;
+    justify-content: space-between
+}
+
+.bracketdown-post-meta span {
+    flex:1;
+    color: #aaa
+}
+
+.bracketdown-post-meta a {
+    border: none;
+    text-decoration: none;
+    color: #222;
+    display: inline-block;
+    font-size: .9em;
+    border: 1px solid #222;
+    padding: 0 .5em;
+    transition-property: border, background, color;
+    transition-duration: .3s
+}
+
+.bracketdown-post-meta a:hover {
+    border-color: #222;
+    background: #222;
+    color: #fff
 }

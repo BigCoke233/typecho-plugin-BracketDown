@@ -103,11 +103,18 @@ Class BracketDown_Parser {
                     );
 
                     $result = Typecho_Widget::widget('Widget_Abstract_Contents')->push($result);
+
+                    $excerpt = mb_substr($result[0]['text'], 0, 100, 'utf-8');
+
                     $text = str_replace(
                         $matches[0][$i],
                         '<div class="bracketdown-post">
-                            <h4><a href="'.$result['permalink'].'">'.$result[0]['title'].'</a></h4>
-                            <p>'.date('Y-m-d', $result[0]['created']).'</p>
+                            <h4 class="bracketdown-post-title"><a href="'.$result['permalink'].'">'.$result[0]['title'].'</a></h4>
+                            <p class="bracketdown-post-excerpt">'.$excerpt.'...</p>
+                            <p class="bracketdown-post-meta">
+                                <span>'.date('Y-m-d', $result[0]['created']).'</span>
+                                <a href="'.$result['permalink'].'">阅读全文</a>
+                            </p>
                         </div>'
                     ,$text);
 

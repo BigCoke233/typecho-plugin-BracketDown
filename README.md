@@ -57,7 +57,19 @@ or
 
 推荐使用第一种方法。
 
-### 链接解析
+### 文章卡片（Art）
+
+> 该功能的灵感即短代码语法来自于 [youranreus/G](https://github.com/youranreus/G)
+
+当你需要在你的一篇文章里提及另一篇文章，并引导读者阅读，可以使用文章卡片。
+
+```
+[art]cid[/art]
+```
+
+其中，`cid` 表示 Typecho 文章的标识符，每篇文章都有自己独一无二的 cid，可以到后台查看，具体方法为：管理-文章-点击一篇文章进行编辑-查看浏览器地址栏最后的数字
+
+### 链接解析（Link to Content）
 
 > 此功能可以在插件设置中开启/关闭
 
@@ -72,6 +84,7 @@ https://github.com/BigCoke233/typecho-plugin-BracketDown
 - GitHub：指向仓库或用户页面的链接会以卡片展示内容
 ![](docs/github-card.png)
 - Bilibili：指向视频页面的链接会被解析为视频插入到文章中（代码参考 [superLink 插件](https://github.com/ShangJixin/Typecho-Plugin-superLink/)）
+
 
 ### 文字上色（TextColor）
 
