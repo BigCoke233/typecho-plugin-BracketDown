@@ -102,18 +102,16 @@ Class BracketDown_Parser {
                         ->where('cid = ?', $id)
                     );
 
-                    $result = Typecho_Widget::widget('Widget_Abstract_Contents')->push($result);
-
-                    $excerpt = mb_substr($result[0]['text'], 0, 100, 'utf-8');
-
+                    $val = Typecho_Widget::widget('Widget_Abstract_Contents')->push($result[0]);
+                    $excerpt = mb_substr($val['text'], 0, 100, 'utf-8');
                     $text = str_replace(
                         $matches[0][$i],
                         '<div class="bracketdown-post">
-                            <h4 class="bracketdown-post-title"><a href="'.$result['permalink'].'">'.$result[0]['title'].'</a></h4>
+                            <h4 class="bracketdown-post-title"><a href="'.$val['permalink'].'">'.$result[0]['title'].'</a></h4>
                             <p class="bracketdown-post-excerpt">'.$excerpt.'...</p>
                             <p class="bracketdown-post-meta">
-                                <span>'.date('Y-m-d', $result[0]['created']).'</span>
-                                <a href="'.$result['permalink'].'">阅读全文</a>
+                                <span>'.date('Y-m-d', $val['created']).'</span>
+                                <a href="'.$val['permalink'].'">阅读全文</a>
                             </p>
                         </div>'
                     ,$text);
