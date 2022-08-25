@@ -127,11 +127,9 @@ Class BracketDown_Parser {
                 
             //链接可以被解析
             $data = str_replace('https://github.com/','', $url);
-            $data = explode('/', $data);
-
             $text = preg_replace(
                 '/'.$replace.'/i',
-                '<div class="github-card" data-user="'.$data[0].'" data-repo="'.$data[1].'">Loading...</div>',
+                '<div class="github-card" data-github="'.$data.'">Loading...</div>',
                 $text
             );
 

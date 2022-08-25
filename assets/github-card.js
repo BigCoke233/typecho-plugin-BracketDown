@@ -1,1 +1,75 @@
-(function(d){var base="//lab.lepture.com/github-cards/";var i,count=0;var metas=d.getElementsByTagName('meta');var client_url,client_id,client_secret,client_theme;for(i=0;i<metas.length;i++){var n=metas[i].getAttribute('name');var c=metas[i].getAttribute('content');if(n==='gc:url'){client_url=c}else if(n==='gc:base'){base=c}else if(n==='gc:client-id'){client_id=c}else if(n==='gc:client-secret'){client_secret=c}else if(n==='gc:theme'){client_theme=c}}function queryclass(name){if(d.querySelectorAll){return d.querySelectorAll('.'+name)}var elements=d.getElementsByTagName('div');var ret=[];for(i=0;i<elements.length;i++){if(~elements[i].className.split(' ').indexOf(name)){ret.push(elements[i])}}return ret}function querydata(element,name){return element.getAttribute('data-'+name)}function heighty(iframe){if(window.addEventListener){window.addEventListener('message',function(e){if(iframe.id===e.data.sender){iframe.height=e.data.height}},false)}}function render(card,cardurl){cardurl=cardurl||client_url;if(!cardurl){var theme=querydata(card,'theme')||client_theme||'default';cardurl=base+'cards/'+theme+'.html'}var user=querydata(card,'user');var repo=querydata(card,'repo');var github=querydata(card,'github');if(github){github=github.split('/');if(github.length&&!user){user=github[0];repo=repo||github[1]}}if(!user){return}count+=1;var width=querydata(card,'width');var height=querydata(card,'height');var target=querydata(card,'target');var key=querydata(card,'client-id')||client_id;var secret=querydata(card,'client-secret')||client_secret;var identity='ghcard-'+user+'-'+count;var iframe=d.createElement('iframe');iframe.setAttribute('id',identity);iframe.setAttribute('frameborder',0);iframe.setAttribute('scrolling',0);iframe.setAttribute('allowtransparency',true);var url=cardurl+'?user='+user+'&identity='+identity;if(repo){url+='&repo='+repo}if(target){url+='&target='+target}if(key&&secret){url+='&client_id='+key+'&client_secret='+secret}iframe.src=url;iframe.width=width||Math.min(card.parentNode.clientWidth||400,400);if(height){iframe.height=height}heighty(iframe);card.parentNode.replaceChild(iframe,card);return iframe}var cards=queryclass('github-card');for(i=0;i<cards.length;i++){render(cards[i])}if(window.githubCard){window.githubCard.render=render}})(document);
+(function(){
+
+    function handleError(status) {
+        var error_html = '数据获取失败，错误信息：<br>'+status+
+            '<button id="reload-'+$(card).attr('id')+'">重新加载</button>';
+        return error_html;
+    }
+
+    function renderRepo(data) {
+        var html = '<h4 class="github-card-title">'+data['name']+'</h4>'+
+            '<p class="github-card-des">'+data['description']+'</p>'+
+            '<ul class="github-card-meta">'+
+                '<li>Star '+data['stargazers_count']+'</li>'+
+                '<li>Fork '+data['forks']+'</li>'+
+            '</ul>'+
+            '<p class="github-card-action"><a href="'+data['html_url']+'" target="_blank">查看详情</a></p>';
+        return html;
+    }
+    
+    function renderUser(data) {
+        var html = '<section class="github-card-avatar">'+
+            '<img src="'+data['avatar_url']+'">'+
+        '</section><section class="github-card-content">'+
+            '<h4 class="github-card-title">'+data['name']+'</h4>'+
+            '<p class="github-card-des">'+data['bio']+'</p>'+
+            '<ul class="github-card-meta">'+
+                '<li>Followers '+data['followers']+'</li>'+
+                '<li>Following '+data['following']+'</li>'+
+            '</ul>'+
+        '</section>';
+        return html;
+    }
+
+    var githubCardNum=0;
+
+    $('[data-github]').each(function(){
+        githubCardNum++;
+        $(this).attr('id','github-card-'+githubCardNum);
+        
+        var card = this;
+        var url;
+        var info = $(this).attr('data-github');
+        var info_array = info.split('/');
+        console.log(info_array);
+
+        var _token;
+        if(token_ghOAuthClientID!='' && token_ghOAuthClientSecret!=''){
+            _token = '?client_id='+token_ghOAuthClientID+'&client_secret='+token_ghOAuthClientSecret
+        }
+
+        //判断给出的数据是用户还是仓库
+        if(info_array[1]!=''){
+            //是仓库，则请求 api.github.com/repos/
+            url = 'https://api.github.com/repos/'+info+_token;
+        }
+        else {
+            //是用户，则请求 api.github.com/users/
+            url = 'https://api.github.com/users/'+info_array[0]+_token;
+        }
+
+        $.get(url, function(data, status){
+            if(status!='success') {
+                return handleError(status);
+            }else{
+                if(info_array[1]!=''){
+                    HTML = renderRepo(data);
+                }else{
+                    HTML = renderUser(data);
+                }
+            }
+            $(card).html(HTML);
+        });
+    });
+    
+})();
