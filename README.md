@@ -85,6 +85,17 @@ https://github.com/BigCoke233/typecho-plugin-BracketDown
 ![](docs/github-card.png)
 - Bilibili：指向视频页面的链接会被解析为视频插入到文章中（代码参考 [superLink 插件](https://github.com/ShangJixin/Typecho-Plugin-superLink/)）
 
+<details>
+<summary>关于 Pjax</summary>
+
+如果你的主题使用了 pjax，你可能需要设置回调函数才能正常使用这个功能。
+
+```javascript
+if($('[data-github]').length) { BracketDown.core() }
+```
+
+</details>
+
 
 ### 文字上色（TextColor）
 

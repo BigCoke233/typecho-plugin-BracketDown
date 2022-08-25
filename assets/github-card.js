@@ -1,3 +1,5 @@
+var BracketDown = {};
+
 (function(){
 
     function handleError(status) {
@@ -36,42 +38,45 @@
 
     var githubCardNum=0;
 
-    $('[data-github]').each(function(){
-        githubCardNum++;
-        $(this).attr('id','github-card-'+githubCardNum);
-        
-        var card = this;
-        var url;
-        var info = $(this).attr('data-github');
-        var info_array = info.split('/');
-
-        var _token;
-        if(token_ghOAuthClientID!='' && token_ghOAuthClientSecret!=''){
-            _token = '?client_id='+token_ghOAuthClientID+'&client_secret='+token_ghOAuthClientSecret
-        }
-
-        //判断给出的数据是用户还是仓库
-        if(info_array[1]!=''){
-            //是仓库，则请求 api.github.com/repos/
-            url = 'https://api.github.com/repos/'+info+_token;
-        }
-        else {
-            //是用户，则请求 api.github.com/users/
-            url = 'https://api.github.com/users/'+info_array[0]+_token;
-        }
-
-        $.get(url, function(data, status){
-            if(status!='success') {
-                return handleError(status);
-            }else{
-                if(info_array[1]!=''){
-                    HTML = renderRepo(data);
-                }else{
-                    HTML = renderUser(data);
-                }
-            }
-            $(card).html(HTML);
-        });
-    });
+    BracketDown.core=function() {
+        $('[data-github]').each(function(){
+            githubCardNum++;
+            $(this).attr('id','github-card-'+githubCardNum);
+            
+            var card = this;
+            var url;
+            var info = $(this).attr('data-github');
+            var info_array = info.split('/');
     
+            var _token;
+            if(token_ghOAuthClientID!='' && token_ghOAuthClientSecret!=''){
+                _token = '?client_id='+token_ghOAuthClientID+'&client_secret='+token_ghOAuthClientSecret
+            }
+    
+            //判断给出的数据是用户还是仓库
+            if(info_array[1]!=''){
+                //是仓库，则请求 api.github.com/repos/
+                url = 'https://api.github.com/repos/'+info+_token;
+            }
+            else {
+                //是用户，则请求 api.github.com/users/
+                url = 'https://api.github.com/users/'+info_array[0]+_token;
+            }
+    
+            $.get(url, function(data, status){
+                if(status!='success') {
+                    return handleError(status);
+                }else{
+                    if(info_array[1]!=''){
+                        HTML = renderRepo(data);
+                    }else{
+                        HTML = renderUser(data);
+                    }
+                }
+                $(card).html(HTML);
+            });
+        });
+    }
 })();
+
+BracketDown.core();
