@@ -92,23 +92,26 @@ Class BracketDown_Parser {
     static public function postCard($text)
     {
         if (preg_match_all("/\[art\](.*?)\[\/art\]/s", $text, $matches)){
+                
+                $i = 0;
+                foreach($matches[1] as $id) {
+                    $db = Typecho_Db::get();
+                    $result = $db->fetchAll($db->select()->from('table.contents')
+                        ->where('status = ?', 'publish')
+                        ->where('type = ?', 'post')
+                        ->where('cid = ?', $id)
+                    );
 
-            $i = 0;
-            foreach($matches[1] as $id) {
+                    $result = Typecho_Widget::widget('Widget_Abstract_Contents')->push($result);
+                    $text = str_replace(
+                        $matches[0][$i],
+                        '<div class="bracketdown-post">
+                            <h4><a href="'.$result['permalink'].'">'.$result[0]['title'].'</a></h4>
+                            <p>'.date('Y-m-d', $result[0]['created']).'</p>
+                        </div>'
+                    ,$text);
 
-                $db = Typecho_Db::get();
-                $result = $db->fetchAll($db->select()->from('table.contents')
-                    ->where('status = ?', 'publish')
-                    ->where('type = ?', 'post')
-                    ->where('cid = ?', $id)
-                );
-
-                $text = str_replace(
-                    $matches[0][$i],
-                    '<div class="bracketdown-post"><h4>'.$result[0]['title'].'</h4><p>'.$result[0]['permalink'].'</p></div>'
-                ,$text);
-
-                $i++;
+                    $i++;
 
             }
 
