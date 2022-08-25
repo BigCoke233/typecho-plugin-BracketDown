@@ -7,13 +7,15 @@
     }
 
     function renderRepo(data) {
-        var html = '<h4 class="github-card-title">'+data['name']+'</h4>'+
+        var html = '<section class="github-card-content">'+
+        '<h4 class="github-card-title">'+data['name']+'</h4>'+
             '<p class="github-card-des">'+data['description']+'</p>'+
-            '<ul class="github-card-meta">'+
+            '<div class="github-card-footer"><ul class="github-card-meta">'+
                 '<li>Star '+data['stargazers_count']+'</li>'+
                 '<li>Fork '+data['forks']+'</li>'+
             '</ul>'+
-            '<p class="github-card-action"><a href="'+data['html_url']+'" target="_blank">查看详情</a></p>';
+            '<a href="'+data['html_url']+'" target="_blank" class="github-card-action">查看详情</a></div>'+
+        '</section>';
         return html;
     }
     
@@ -21,12 +23,13 @@
         var html = '<section class="github-card-avatar">'+
             '<img src="'+data['avatar_url']+'">'+
         '</section><section class="github-card-content">'+
-            '<h4 class="github-card-title">'+data['name']+'</h4>'+
+            '<h4 class="github-card-title">'+data['name']+
+            '<small>@'+data['login']+'</small></h4>'+
             '<p class="github-card-des">'+data['bio']+'</p>'+
-            '<ul class="github-card-meta">'+
+            '<div class="github-card-footer"><ul class="github-card-meta">'+
                 '<li>Followers '+data['followers']+'</li>'+
                 '<li>Following '+data['following']+'</li>'+
-            '</ul>'+
+            '</ul><a href="'+data['html_url']+'" target="_blank" class="github-card-action">查看详情</a></div>'+
         '</section>';
         return html;
     }
@@ -41,7 +44,6 @@
         var url;
         var info = $(this).attr('data-github');
         var info_array = info.split('/');
-        console.log(info_array);
 
         var _token;
         if(token_ghOAuthClientID!='' && token_ghOAuthClientSecret!=''){
