@@ -71,7 +71,7 @@ https://github.com/BigCoke233/typecho-plugin-BracketDown
 
 - GitHub：指向仓库或用户页面的链接会以卡片展示内容
 ![](docs/github-card.png)
-- Bilibili：指向视频页面的链接会被解析为视频插入到文章中（该功能未实装）
+- Bilibili：指向视频页面的链接会被解析为视频插入到文章中（代码参考 [superLink 插件](https://github.com/ShangJixin/Typecho-Plugin-superLink/)）
 
 ### 文字上色（TextColor）
 

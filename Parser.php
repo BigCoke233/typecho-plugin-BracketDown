@@ -115,9 +115,10 @@ Class BracketDown_Parser {
     /**
      * 解析 github 链接
      */
-    static public function github($text, $replace, $url) {
-
+    static public function github($text, $replace, $url) 
+    {
         if (preg_match("/https?:\/\/github.com\/(.*?)\/(.*?)/is",$url,$matches)){
+
             if (preg_match("/https?:\/\/github.com\/blog\/(.*?)/is",$url,$matches)){
                 return $text;
             }
@@ -141,9 +142,38 @@ Class BracketDown_Parser {
     }
 
     /**
+     * 创建 bilibili 嵌入代码
+     */
+    static public function bilibili($text, $replace, $url) 
+    {
+        $text = preg_replace(
+            '/'.$replace.'/i',
+            '<iframe src="'.BracketDown_Parser::bilibiliURL($url).'" class="bilibili-video-player" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>',
+            $text
+        );
+        return $text;
+    }
+
+    /**
      * 解析 bilibili 链接
      */
-    static public function bilibili($text, $replace, $url) {
-        return $text;
+    static public function bilibiliURL($url) 
+    {
+        $quality_request = "&as_wide=1&high_quality=1";
+        if(preg_match("/https?:\/\/(m.|www.|)bilibili.(com|tv)\/video\/(a|b)v([A-Za-z0-9]+)(\/?.*?&p=|\/?\?p=)?(\d+)?/i", $url, $matches)) {
+            $vid = (is_numeric($matches[4]) ? 'aid='.$matches[4] : 'bvid='.$matches[4]) . (empty($matches[6]) ? '' : '&page='.intval($matches[6]));
+            $iframe = 'https://player.bilibili.com/player.html?'.$vid.$quality_request;
+
+            return $iframe;
+
+        } else if(preg_match("/https?:\/\/(www.|)(acg|b23).tv\/(a|b)v([A-Za-z0-9]+)(\/?.*?&p=|\/?\?p=)?(\d+)?/i", $url, $matches)) {
+            $vid = (is_numeric($matches[4]) ? 'aid='.$matches[4] : 'bvid='.$matches[4]) . (empty($matches[6]) ? '' : '&page='.intval($matches[6]));
+            $iframe = 'https://player.bilibili.com/player.html?'.$vid.$quality_request;
+
+            return $iframe;
+
+        } else {
+            return 0;
+        }
     }
 }
