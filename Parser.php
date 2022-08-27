@@ -206,12 +206,14 @@ Class BracketDown_Parser {
      */
     static public function bilibili($text, $replace, $url) 
     {
-        $text = preg_replace(
-            '/'.$replace.'/i',
-            '<iframe src="'.BracketDown_Parser::bilibiliURL($url).'" class="bilibili-video-player" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>',
-            $text
-        );
-        return $text;
+        if (preg_match("/https?:\/\/bilibili.com\/video\/(.*?)/is",$url,$matches)){
+            $text = preg_replace(
+                '/'.$replace.'/i',
+                '<iframe src="'.BracketDown_Parser::bilibiliURL($url).'" class="bilibili-video-player" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>',
+                $text
+            );
+            return $text;
+        }
     }
 
     /**
