@@ -170,3 +170,13 @@ iframe.bilibili-video-player {
     background: #222;
     color: #fff
 }
+
+a.bracketdown-button {
+    display: inline-block;
+    padding: .2em .5em;
+    line-height: 1.5;
+    background: #eee;
+    color: #222;
+    border: none;
+    border-radius: 1px
+}

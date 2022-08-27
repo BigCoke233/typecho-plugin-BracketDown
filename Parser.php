@@ -48,8 +48,29 @@ Class BracketDown_Parser {
 			'/\[block\](.*?)\[\/block\]/s',
 			'<div class="bracketdown-block">${1}</div>',
 		$text);
+        $text = preg_replace(
+			'/\[notice\](.*?)\[\/notice\]/s',
+			'<div class="bracketdown-block bracketdown-notice">${1}</div>',
+		$text);
         return $text;
     }
+
+    /**
+	 * 解析按钮
+	 */
+    static public function btn($text)
+    {
+		$text = preg_replace(
+			'/\[btn link="\<a(.*?)href="(.*?)"(.*?)\>(.*?)\<\/a\>"\](.*?)\[\/btn\]/s',
+			'<a href="${2}" class="bracketdown-button">${5}</a>',
+        $text);
+        $text = preg_replace(
+			'/\[btn link="(.*?)"\](.*?)\[\/btn\]/s',
+			'<a href="${1}" class="bracketdown-button">${2}</a>',
+        $text);
+		
+		return $text;
+	}
 	
 	/**
 	 *  解析 Text-Color
