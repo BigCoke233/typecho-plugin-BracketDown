@@ -113,14 +113,14 @@ class BracketDown_Plugin implements Typecho_Plugin_Interface
     {
         $text = empty($last) ? $data : $last;
         if ($widget instanceof Widget_Archive) {
-			$text = BracketDown_Parser::linkToContent(
+			$text = BracketDown_Parser::underline(
+					BracketDown_Parser::linkToContent(
 					BracketDown_Parser::postCard(
 					BracketDown_Parser::block(
 					BracketDown_Parser::details(
 					BracketDown_Parser::textColor(
 					BracketDown_Parser::kbd(
-					BracketDown_Parser::ruby(
-					BracketDown_Parser::underline($text
+					BracketDown_Parser::ruby($text
 				))))))));
         }
         return $text;

@@ -77,7 +77,7 @@ Class BracketDown_Parser {
     static public function underline($text)
     {
 		$text = preg_replace(
-			'/\?(.*?)\?/s',
+			'/\?\?(.*?)\?\?/s',
 			'<span class="bracketdown-underline">${1}</span>'
 		,$text);
 		
@@ -206,14 +206,20 @@ Class BracketDown_Parser {
      */
     static public function bilibili($text, $replace, $url) 
     {
-        if (preg_match("/https?:\/\/bilibili.com\/video\/(.*?)/is",$url,$matches)){
+        if (preg_match("/https?:\/\/(m.|www.|)bilibili.(com|tv)\/video\/(a|b)v([A-Za-z0-9]+)(\/?.*?&p=|\/?\?p=)?(\d+)?/i", $url, $matches) || preg_match("/https?:\/\/(www.|)(acg|b23).tv\/(a|b)v([A-Za-z0-9]+)(\/?.*?&p=|\/?\?p=)?(\d+)?/i", $url, $matches)){
+
             $text = preg_replace(
                 '/'.$replace.'/i',
                 '<iframe src="'.BracketDown_Parser::bilibiliURL($url).'" class="bilibili-video-player" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>',
                 $text
             );
             return $text;
+
+        } else {
+            return $text;
         }
+
+        return $text;
     }
 
     /**

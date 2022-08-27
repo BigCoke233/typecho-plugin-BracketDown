@@ -119,7 +119,7 @@ if($('[data-github]').length) { BracketDown.core() }
 可以用以下语法给一段文字添加下划线，默认样式为 `text-decoration: underline`。
 
 ```
-?画线的句子?
+??画线的句子??
 ```
 
 ### 注音
